@@ -55,3 +55,5 @@ jobs:
         # Run Docker Compose
         sudo docker-compose down
         sudo docker-compose up -d
+
+        docker exec -it mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
