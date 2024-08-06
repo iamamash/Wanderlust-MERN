@@ -42,15 +42,21 @@ jobs:
     - name: Push backend Docker image to Docker Hub
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-backend:latest
+        
+    - name: Install SSH Client
+      run: sudo apt-get install -y openssh-client
 
-    - name: Install Docker Compose
+    - name: SSH into EC2 and Deploy
       run: |
-        sudo curl -L "https://github.com/docker/compose/releases/download/v2.17.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        sudo chmod +x /usr/local/bin/docker-compose
+        ssh -i ${{ secrets.EC2_SSH_KEY }} -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_DNS }} << 'EOF'
+          # Clone the repository if not already cloned
+          if [ ! -d "/home/ubuntu/" ]; then
+            git clone https://github.com/iamamash/Wanderlust-MERN.git /home/ubuntu/
+          fi
 
-    - name: Set up Docker Compose
-      run: docker-compose --version
+          # Navigate to the project directory
+          cd /home/ubuntu/Wanderlust-MERN
 
-    - name: Run Docker Compose
-      run: |
-        docker-compose up -d
+          # Run Docker Compose
+          sudo docker-compose up -d
+        EOF
