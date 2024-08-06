@@ -31,6 +31,10 @@ jobs:
         -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
 
+    - name: Verify Docker Compose Installation
+      run: |
+        docker-compose --version
+
     - name: Deploy with Docker Compose
       run: |
         # Clone the repository if not already cloned
