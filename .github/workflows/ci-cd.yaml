@@ -24,8 +24,19 @@ jobs:
     - name: Install SSH Client
       run: sudo apt-get install -y openssh-client
       
-    - name: Setup SSH Key
+    - name: SSH into EC2 and Deploy
       run: |
         echo "${{ secrets.EC2_SSH_KEY }}" > /tmp/id_rsa
-        cat /tmp/id_rsa
         chmod 400 /tmp/id_rsa
+        ssh -i /tmp/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_DNS }} << 'EOF'
+          # Clone the repository if not already cloned
+          if [ ! -d "/home/ubuntu" ]; then
+            git clone https://github.com/iamamash/Wanderlust-MERN.git /home/ubuntu/
+          fi
+
+          # Navigate to the project directory
+          cd /home/ubuntu/Wanderlust-MERN
+
+          # Run Docker Compose
+          sudo docker-compose up -d
+        EOF
