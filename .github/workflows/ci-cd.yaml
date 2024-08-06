@@ -28,6 +28,9 @@ jobs:
       run: |
         echo "${{ secrets.EC2_SSH_KEY }}" > /tmp/id_rsa
         sudo chmod 600 /tmp/id_rsa
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.EC2_PUBLIC_DNS }} >> ~/.ssh/known_hosts
+        
         sudo ssh -tt -i /tmp/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_DNS }} << 'EOF'
           # Clone the repository if not already cloned
           if [ ! -d "/home/ubuntu" ]; then
