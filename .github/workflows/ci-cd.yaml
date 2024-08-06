@@ -29,8 +29,8 @@ jobs:
 
     - name: Push Docker images to Docker Hub
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/mern-frontend:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/mern-backend:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-frontend:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-backend:latest
 
   # Continuous Deployment job
   deploy:
