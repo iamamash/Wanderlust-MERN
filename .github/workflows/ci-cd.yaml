@@ -14,5 +14,8 @@ jobs:
     steps:
     - name:  Deploy on EC2
       run: |
+          cd /home/ubuntu/
+          git clone https://github.com/iamamash/Wanderlust-MERN.git
+          cd Wanderlust-MERN
           # Run Docker Compose
           sudo docker-compose up -d
