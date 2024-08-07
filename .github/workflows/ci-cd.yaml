@@ -1,12 +1,12 @@
 name: CI/CD Pipeline
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  # pull_request:
-  #   branches:
-  #     - main
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
 
 jobs:
   # Continuous Integration job
@@ -36,7 +36,7 @@ jobs:
   # Continuous Deployment job
   deploy:
     needs: build
-    runs-on: self-hosted  # Ensure this is your self-hosted runner label
+    runs-on: self-hosted
 
     steps:
     - name: Checkout code
@@ -45,15 +45,17 @@ jobs:
     - name: Deploy with Docker Compose
       run: |
         # Clone the repository if not already cloned
-        if [ ! -d "/home/ubuntu/" ]; then
-          git clone https://github.com/iamamash/Wanderlust-MERN.git /home/ubuntu/
-        fi
+          sudo rm -rf /home/ubuntu/repo && git clone https://github.com/iamamash/Wanderlust-MERN.git /home/ubuntu/repo/
 
         # Navigate to the project directory
-        cd /home/ubuntu/Wanderlust-MERN/
+        cd /home/ubuntu/repo/
+
+        # Set up .env files
+        sed -i -e "s|http://localhost:5000|http://${{ secrets.EC2_IP }}:5000|" ./frontend/.env.sample
+        sed -i -e "s|http://localhost:5173|http://${{ secrets.EC2_IP }}:5173|" ./backend/.env.sample
 
         # Run Docker Compose
         sudo docker-compose down
         sudo docker-compose up -d
 
-        docker exec -t mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
+        sudo docker exec -t mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray

@@ -94,6 +94,33 @@ _I'd love for you to make the most of this project - it's all about learning, he
    ```bash
    npm run dev
    ```
+## Setting up the project using docker-compose
+1. **Fork and Clone the Repository**
+
+   ```bash
+   git clone https://github.com/{your-username/wanderlust.git
+   ```
+
+2. **Navigate to the project Directory**
+
+   ```bash
+   cd Wanderlust-MERN
+   ```
+
+3. **Change IP in .env.sample**
+
+   ```bash
+   vim ./backend/.env.sample    # change the CORS_ORIGIN URL
+   vim ./frontend/.env.sample   # change the VITE_API_PATH URL
+   ```
+
+4. **Execute the docker-compose file**
+
+   ```bash
+   docker-compose up -d
+   docker exec -it mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
+   ```
+
 
 ## 🌟 Ready to Contribute?
 
