@@ -11,6 +11,8 @@ services:
   backend:
     container_name: backend
     image: iamamash/wanderlust-mern-backend:latest
+    env_file:
+      - ./backend/.env.sample
     ports:
       - "5000:5000"
     depends_on:
@@ -19,6 +21,8 @@ services:
   frontend:
     container_name: frontend
     image: iamamash/wanderlust-mern-frontend:latest
+    env_file:
+      - ./frontend/.env.sample
     ports:
       - "5173:5173"
     stdin_open: true
