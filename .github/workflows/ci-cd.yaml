@@ -55,13 +55,11 @@ jobs:
     - name: Deploy with Docker Compose
       run: |
         # Clone the repository if not already cloned
-        if [ ! -d "/home/ubuntu/" ]; then
-          git clone https://github.com/iamamash/Wanderlust-MERN.git /home/ubuntu/
-        fi
+          sudo rm -rf Wanderlust-MERN && git clone https://github.com/iamamash/Wanderlust-MERN.git /home/ubuntu/
 
         # Navigate to the project directory
         cd
-        cd /home/ubuntu/Wanderlust-MERN/
+        pwd
 
         # Run Docker Compose
         sudo docker-compose down
