@@ -56,12 +56,12 @@ jobs:
       run: |
         # Clone the repository if not already cloned
         if [ ! -d "/home/ubuntu/" ]; then
-          git clone https://github.com/iamamash/Wanderlust-MERN.git /home/ubuntu/
+          git clone https://github.com/iamamash/Wanderlust-MERN.git
         fi
 
         # Navigate to the project directory
         pwd
-        cd /home/ubuntu/Wanderlust-MERN/
+        cd /home/ubuntu/_work/Wanderlust-MERN/
 
         # Run Docker Compose
         # sudo docker-compose down
