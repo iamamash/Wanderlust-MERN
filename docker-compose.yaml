@@ -10,32 +10,22 @@ services:
     
   backend:
     container_name: backend
-    image: iamamash/wanderlust-mern-backend:latest
-    env_file:
-      - ./backend/.env.sample
+    build: ./backend
     ports:
       - "5000:5000"
-    volumes:
-      - logs:/app/logs
-      - ./backend:/app
-      - /app/node_modules
     depends_on:
       - mongodb
 
   frontend:
     container_name: frontend
-    image: iamamash/wanderlust-mern-frontend:latest
+    build: ./frontend
     ports:
       - "5173:5173"
-    volumes:
-      - ./frontend/src:/app/src
-    env_file:
-      - ./frontend/.env.sample
     stdin_open: true
     tty: true
     depends_on:
       - backend
 
 volumes:
-  logs:
+  data:
 
