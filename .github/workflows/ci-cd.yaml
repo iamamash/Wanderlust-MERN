@@ -45,7 +45,7 @@ jobs:
         
   # Continuous Deployment job
   deploy:
-    needs: build
+    # needs: build
     runs-on: self-hosted  # Ensure this is your self-hosted runner label
 
     steps:
