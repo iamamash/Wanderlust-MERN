@@ -42,18 +42,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up .env files
-      run: |
-        # Update VITE_API_PATH in frontend/.env.sample
-        cat /home/ubuntu/repo/frontend/.env.sample
-        sed -i -e "s|http://localhost:5000|http://${{ secrets.EC2_IP }}:5000|" /home/ubuntu/repo/frontend/.env.sample
-        cat /home/ubuntu/repo/frontend/.env.sample
-        
-        # Update CORS_ORIGIN in backend/.env.sample
-        cat /home/ubuntu/repo/backend/.env.sample
-        sed -i -e "s|http://localhost:5173|http://${{ secrets.EC2_IP }}:5173|" /home/ubuntu/repo/backend/.env.sample
-        cat /home/ubuntu/repo/backend/.env.sample
-
     - name: Deploy with Docker Compose
       run: |
         # Clone the repository if not already cloned
@@ -61,6 +49,10 @@ jobs:
 
         # Navigate to the project directory
         cd /home/ubuntu/repo/
+
+        # Set up .env files
+        sed -i -e "s|http://localhost:5000|http://${{ secrets.EC2_IP }}:5000|" ./frontend/.env.sample
+        sed -i -e "s|http://localhost:5173|http://${{ secrets.EC2_IP }}:5173|" ./backend/.env.sample
 
         # Run Docker Compose
         sudo docker-compose down
