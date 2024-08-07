@@ -10,42 +10,42 @@ on:
 
 jobs:
   # Continuous Integration job
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v3
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-  #   - name: Set up .env files
-  #     env:
-  #       IP_ADDRESS: ${{ secrets.EC2_IP }}
-  #     run: |
-  #       # Update VITE_API_PATH in frontend/.env.sample
-  #       sed -i "s|http://localhost:5000|http://${IP_ADDRESS}:5000|" ./frontend/.env.sample
+    - name: Set up .env files
+      env:
+        IP_ADDRESS: ${{ secrets.EC2_IP }}
+      run: |
+        # Update VITE_API_PATH in frontend/.env.sample
+        sed -i "s|http://localhost:5000|http://${IP_ADDRESS}:5000|" ./frontend/.env.sample
         
-  #       # Update CORS_ORIGIN in backend/.env.sample
-  #       sed -i "s|http://localhost:5173|http://${IP_ADDRESS}:5173|" backend/.env.sample
+        # Update CORS_ORIGIN in backend/.env.sample
+        sed -i "s|http://localhost:5173|http://${IP_ADDRESS}:5173|" backend/.env.sample
 
-  #   - name: Build Docker images
-  #     run: |
-  #       docker build -t ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-frontend:latest ./frontend/
-  #       docker build -t ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-backend:latest ./backend/
+    - name: Build Docker images
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-frontend:latest ./frontend/
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-backend:latest ./backend/
 
-  #   - name: Log in to Docker Hub
-  #     uses: docker/login-action@v2
-  #     with:
-  #       username: ${{ secrets.DOCKER_USERNAME }}
-  #       password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-  #   - name: Push Docker images to Docker Hub
-  #     run: |
-  #       docker push ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-frontend:latest
-  #       docker push ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-backend:latest
+    - name: Push Docker images to Docker Hub
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-frontend:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-backend:latest
 
         
   # Continuous Deployment job
   deploy:
-    # needs: build
+    needs: build
     runs-on: self-hosted
 
     steps:
@@ -59,7 +59,6 @@ jobs:
 
         # Navigate to the project directory
         cd /home/ubuntu/repo/
-        pwd
 
         # Run Docker Compose
         sudo docker-compose down
