@@ -10,7 +10,7 @@ services:
     
   backend:
     container_name: backend
-    build: ./backend
+    image: iamamash/wanderlust-mern-backend:latest
     ports:
       - "5000:5000"
     depends_on:
@@ -18,7 +18,7 @@ services:
 
   frontend:
     container_name: frontend
-    build: ./frontend
+    image: iamamash/wanderlust-mern-frontend:latest
     ports:
       - "5173:5173"
     stdin_open: true
