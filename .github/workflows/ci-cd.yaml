@@ -1,12 +1,12 @@
 name: CI/CD Pipeline
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  # pull_request:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   # Continuous Integration job
@@ -15,6 +15,16 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
+    - name: Set up .env files
+      env:
+        IP_ADDRESS: ${{ secrets.EC2_IP }}
+      run: |
+        # Update VITE_API_PATH in frontend/.env.sample
+        sed -i "s|http://localhost:5000|http://${IP_ADDRESS}:5000|" ./frontend/.env.sample
+        
+        # Update CORS_ORIGIN in backend/.env.sample
+        sed -i "s|http://localhost:5173|http://${IP_ADDRESS}:5173|" backend/.env.sample
 
     - name: Build Docker images
       run: |
@@ -56,4 +66,4 @@ jobs:
         sudo docker-compose down
         sudo docker-compose up -d
 
-        docker exec -t mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
+        sudo docker exec -t mongo mongoimport --db wanderlust --collection posts --file ./data/sample_posts.json --jsonArray
