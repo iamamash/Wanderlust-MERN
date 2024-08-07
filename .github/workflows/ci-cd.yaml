@@ -58,7 +58,7 @@ jobs:
           sudo rm -rf /home/ubuntu/repo/Wanderlust-MERN && git clone https://github.com/iamamash/Wanderlust-MERN.git /home/ubuntu/repo/
 
         # Navigate to the project directory
-        cd
+        cd /home/ubuntu/repo/Wanderlust-MERN
         pwd
 
         # Run Docker Compose
