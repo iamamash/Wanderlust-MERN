@@ -16,14 +16,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up .env files
-      run: |
-        # Update VITE_API_PATH in frontend/.env.sample
-        sed -i "s|http://localhost:5000|http://${{ secrets.EC2_IP }}:5000|" ./frontend/.env.sample
-        
-        # Update CORS_ORIGIN in backend/.env.sample
-        sed -i "s|http://localhost:5173|http://${{ secrets.EC2_IP }}:5173|" backend/.env.sample
-
     - name: Build Docker images
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/wanderlust-mern-frontend:latest ./frontend/
@@ -49,6 +41,14 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
+    - name: Set up .env files
+      run: |
+        # Update VITE_API_PATH in frontend/.env.sample
+        sed -i "s|http://localhost:5000|http://${{ secrets.EC2_IP }}:5000|" /home/ubuntu/repo/frontend/.env.sample
+        
+        # Update CORS_ORIGIN in backend/.env.sample
+        sed -i "s|http://localhost:5173|http://${{ secrets.EC2_IP }}:5173|" /home/ubuntu/repo/backend/.env.sample
 
     - name: Deploy with Docker Compose
       run: |
